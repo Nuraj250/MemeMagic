@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MemeMagic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-center p-4 w-96">
+    <h2 class="text-lg font-bold text-gray-800">MemeMagic 🎭</h2>
+
+    <div id="loading" class="hidden flex justify-center items-center mt-4">
+        <img src="icons/loading.gif" alt="Loading..." class="w-10">
+    </div>
+
+    <canvas id="memeCanvas" class="rounded-lg border shadow-lg mt-4"></canvas>
+
+    <div class="flex justify-center mt-4">
+        <button id="downloadBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Download Meme
+        </button>
+    </div>
+
+    <h3 class="text-sm font-semibold text-gray-600 mt-4">Previous Memes</h3>
+    <div id="previousMemesContainer" class="flex flex-wrap justify-center gap-2 mt-2"></div>
+
+    <script type="module" src="../scripts/popup.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+
+</body>
+
+</html>
