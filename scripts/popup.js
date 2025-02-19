@@ -1,12 +1,13 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    document.getElementById("loading").style.display = "block"; // Show loading spinner
+import { generateMeme } from "./memeGenerator.js";
 
-    chrome.storage.local.get(["memeText", "memeImage"], async (data) => {
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("loading").classList.remove("hidden");
+
+    chrome.storage.local.get(["memeText", "memeImage"], (data) => {
         if (data.memeText && data.memeImage) {
-            await new Promise(r => setTimeout(r, 1000)); // Simulate AI processing delay
             generateMeme(data.memeText, data.memeImage, "memeCanvas");
         }
-        document.getElementById("loading").style.display = "none"; // Hide spinner
+        document.getElementById("loading").classList.add("hidden");
     });
 
     document.getElementById("downloadBtn").addEventListener("click", () => {
@@ -16,22 +17,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         link.href = canvas.toDataURL("image/png");
         link.click();
     });
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-    chrome.storage.local.get(["previousMemes"], (data) => {
-        const container = document.getElementById("previousMemesContainer");
-        if (data.previousMemes) {
-            data.previousMemes.forEach(({ text, meme }) => {
-                const img = document.createElement("img");
-                img.src = `images/${meme}`;
-                img.alt = text;
-                img.width = 100;
-                img.height = 100;
-                container.appendChild(img);
-            });
-        }
+    document.getElementById("shareTwitter").addEventListener("click", () => {
+        const canvas = document.getElementById("memeCanvas");
+        const dataURL = canvas.toDataURL("image/png");
+        const tweetText = encodeURIComponent("Check out this meme I made with #MemeMagic!");
+        window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${dataURL}`, "_blank");
+    });
+
+    document.getElementById("shareReddit").addEventListener("click", () => {
+        const canvas = document.getElementById("memeCanvas");
+        const dataURL = canvas.toDataURL("image/png");
+        window.open(`https://www.reddit.com/submit?url=${dataURL}&title=Made+this+meme+with+MemeMagic!`, "_blank");
     });
 });
-
-

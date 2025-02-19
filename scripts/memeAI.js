@@ -4,41 +4,39 @@ import * as toxicity from '@tensorflow-models/toxicity';
 
 let model, toxicityModel;
 
-// Predefined meme templates categorized by emotion
-const memeTemplates = {
-    "positive": ["success-kid.jpg", "feel-good.jpg"],
-    "negative": ["angry-cat.jpg", "confused-mrkrabs.jpg"],
-    "sarcasm": ["mocking-spongebob.jpg", "patrick-mocking.jpg"],
-    "motivational": ["one-does-not-simply.jpg", "you-can-do-it.jpg"]
-};
+// Fetch Imgflip Meme Templates
+export async function fetchMemeTemplates() {
+    try {
+        const response = await fetch("https://api.imgflip.com/get_memes");
+        const data = await response.json();
+        return data.data.memes;
+    } catch (error) {
+        console.error("Error fetching meme templates:", error);
+        return [];
+    }
+}
 
 // Load AI Models
 export async function loadAIModels() {
     model = await use.load();
     toxicityModel = await toxicity.load(0.8);
-    console.log("TensorFlow.js Models Loaded!");
+    console.log("AI Models Loaded!");
 }
 
-// Analyze text and suggest memes
+// Suggest Meme
 export async function suggestMeme(selectedText) {
-    if (!model || !toxicityModel) {
-        await loadAIModels();
-    }
+    if (!model || !toxicityModel) await loadAIModels();
 
     const embeddings = await model.embed([selectedText]);
     const toxicPredictions = await toxicityModel.classify([selectedText]);
 
-    let sentiment = "neutral"; // Default sentiment
+    let sentiment = "neutral";
     let toxicityFlag = false;
 
-    // Check if the text is toxic
     toxicPredictions.forEach(prediction => {
-        if (prediction.results[0].match) {
-            toxicityFlag = true;
-        }
+        if (prediction.results[0].match) toxicityFlag = true;
     });
 
-    // Simple Sentiment Analysis based on embedding index (Experimental)
     const sentimentScores = {
         "positive": embeddings.arraySync()[0][5],
         "negative": embeddings.arraySync()[0][10],
@@ -50,12 +48,7 @@ export async function suggestMeme(selectedText) {
         sentimentScores[a] > sentimentScores[b] ? a : b
     );
 
-    // If text is toxic, default to sarcasm or block meme generation
-    if (toxicityFlag) {
-        sentiment = "sarcasm";
-    }
+    if (toxicityFlag) sentiment = "sarcasm";
 
-    // Pick a random meme from the suggested category
-    const memes = memeTemplates[sentiment];
-    return memes[Math.floor(Math.random() * memes.length)];
+    return sentiment;
 }

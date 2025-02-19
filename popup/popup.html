@@ -9,26 +9,28 @@
 <body class="bg-gray-100 text-center p-4 w-96">
     <h2 class="text-lg font-bold text-gray-800">MemeMagic 🎭</h2>
 
-    <div id="loading" class="hidden flex justify-center items-center mt-4">
+    <div id="loading" class="hidden">
         <img src="icons/loading.gif" alt="Loading..." class="w-10">
     </div>
 
     <canvas id="memeCanvas" class="rounded-lg border shadow-lg mt-4"></canvas>
 
-    <div class="flex justify-center mt-4">
+    <div class="flex justify-between mt-4">
         <button id="downloadBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Download Meme
+            Download
+        </button>
+        <button id="shareTwitter" class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">
+            Share on Twitter
+        </button>
+        <button id="shareReddit" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+            Share on Reddit
         </button>
     </div>
-
-    <h3 class="text-sm font-semibold text-gray-600 mt-4">Previous Memes</h3>
-    <div id="previousMemesContainer" class="flex flex-wrap justify-center gap-2 mt-2"></div>
 
     <script type="module" src="../scripts/popup.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
-
 </body>
 
 </html>
