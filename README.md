@@ -43,7 +43,7 @@ MemeMagic/
 ### **For Developers (Manual Install)**
 1️⃣ **Clone this repository**  
 ```bash
-git clone https://github.com/yourusername/MemeMagic.git
+git clone https://github.com/Nuraj250/MemeMagic.git
 cd MemeMagic
 ```
 2️⃣ **Start using MemeMagic!** 🎉  
